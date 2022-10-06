@@ -1,0 +1,58 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: rgb(21, 20, 19);
+}
+
+#page-container {
+  width: 90%;
+  max-width: 1600px;
+  margin: 4rem auto;
+  padding: 2rem;
+  background-color: rgb(159, 154, 149);
+  border-radius: 16px;
+}
+
+h1 {
+  text-align: center;
+  color: rgb(21, 20, 19);
+}
+
+h2 {
+  color: rgb(21, 20, 19);
+}
+
+.user-routes {
+  width: 90%;
+  margin: 2em auto;
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+.card {
+  width: 28%;
+}
+
+h3 {
+  color: rgb(21, 20, 19);
+  margin-top: 1.5rem;
+}
+
+span {
+  color: rgb(159, 5, 38);
+}
+
+ul {
+  list-style-position: inside;
+}
+
+.note {
+  font-style: italic;
+  color: rgb(159, 5, 38);
+}

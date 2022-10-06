@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Project Cinch Route</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div id="page-container">
+      <h1>Route Documentation</h1>
+      <h2>User Routes</h2>
+      <div class="user-routes">
+        <div class="get-all-update-delete card">
+          <h3>Get All Users: <span>GET(/users)</span></h3>
+
+          <p>Gets all users and responds with:</p>
+          <ul>
+            <li>user_id</li>
+            <li>first_name</li>
+            <li>last_name</li>
+            <li>job_title</li>
+          </ul>
+          <h3>Update Users by ID: <span>PUT(/users/:id)</span></h3>
+          <ul>
+            <li>
+              Updates existing record indicated by the client as a path
+              parameter.
+            </li>
+            <li>
+              Once record is updated a response is sent that includes the
+              updated user object.
+            </li>
+          </ul>
+          <h3>Delete Users by ID: <span>Delete(/users/:id)</span></h3>
+          <ul>
+            <li>
+              Using a path parameter to identify a user that will be deleted.
+            </li>
+            <li>
+              After the delete user query is executed, we send a response with
+              the number of rows "affected".
+            </li>
+          </ul>
+        </div>
+        <div class="get-user-id card">
+          <h3>Get User By ID: <span>GET(/users/:id)</span></h3>
+          <p>Responds with all table data associated with a user ID.</p>
+          <p>ID is determined by using a path parameter.</p>
+          <ul>
+            <li>user_id</li>
+            <li>first_name</li>
+            <li>last_name</li>
+            <li>job_title</li>
+            <li>job_title</li>
+            <li>email</li>
+            <li>phone</li>
+            <li>pay_rate</li>
+            <li>username</li>
+            <li>password</li>
+          </ul>
+          <p class="note">
+            Note: I will need to hash this password in the future.
+          </p>
+        </div>
+        <div class="create-new-user card">
+          <h3>Create New Users: <span>POST(/users)</span></h3>
+          <p>We input the new user based on the request body.</p>
+          <p>New Users include the following.</p>
+          <ul>
+            <li>user_id <span>(Auto Generated)</span></li>
+            <li>first_name</li>
+            <li>last_name</li>
+            <li>job_title</li>
+            <li>job_title</li>
+            <li>email</li>
+            <li>phone</li>
+            <li>pay_rate</li>
+            <li>username</li>
+            <li>password</li>
+          </ul>
+          <p>
+            Once the new user is created, we send a response that includes the
+            new user object.
+          </p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
