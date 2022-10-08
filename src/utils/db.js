@@ -15,6 +15,7 @@ connection.connect();
 // * Running a query an call back function that will  test the connection. I
 // * will receive an error if connection is unsuccessful, or I will get the
 // * current time.
+// let sql = "select now"
 connection.query('select now()', (err, rows) => {
   // * If error is truthy, console log the error.
   if (err) {
@@ -26,4 +27,15 @@ connection.query('select now()', (err, rows) => {
   }
 });
 
+connection.queryPromise = (sql, params) => {
+  return new Promise((resolve, reject) => {
+    connection.query(sql, params, (err, results) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(results);
+      }
+    });
+  });
+};
 module.exports = connection;

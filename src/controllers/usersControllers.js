@@ -1,6 +1,3 @@
-// //* Accessing local data
-// let usersData = require('../../data/index.js');
-
 const db = require('../utils/db');
 
 // * Creating a getUser controller function that will accept a request and a
