@@ -2,7 +2,7 @@
 
 ## Todo list for this piece of the project
 
-[] Adding a register route
+[X] Adding a register route
 
 [] Adding a login route
 

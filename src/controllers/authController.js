@@ -1,5 +1,6 @@
 const db = require('../utils/db');
 const argon = require('argon2');
+const jwt = require('jsonwebtoken');
 
 const register = async (req, res) => {
   const firstName = req.body.firstName;
@@ -58,7 +59,62 @@ const register = async (req, res) => {
   }
 };
 
-const login = () => {};
+const login = async (req, res) => {
+  let username = req.body.username;
+  let password = req.body.password;
+
+  //* SQL query to grab the password hash from the database
+  let sql =
+    'SELECT id, first_name, last_name, email, password_hash FROM users WHERE user_name = ?';
+
+  let params = [username];
+
+  let rows;
+  try {
+    rows = await db.queryPromise(sql, params);
+  } catch (err) {
+    console.log(`Failed to get user info: ${err}`);
+    res.sendStatus(500); //* 500 because error had something to do with the backend.
+    return;
+  }
+  if (rows.length >= 2) {
+    console.log(`Got more than one row for the user: ${username}`);
+    res.sendStatus(500);
+    return;
+  }
+  if (rows.length === 0) {
+    res.sendStatus(400);
+    return;
+  }
+  const userID = rows[0].id;
+  const passwordHash = rows[0].password_hash;
+  const firstName = rows[0].first_name;
+  const lastName = rows[0].last_name;
+  const email = rows[0].email;
+
+  //* Checking the password hash in the database against what was provided.
+  let pass = false;
+  try {
+    pass = await argon.verify(passwordHash, password);
+  } catch (err) {
+    console.log(`Failed to verify password: ${err}`);
+    pass = false;
+  }
+
+  if (pass) {
+    let token = {
+      username,
+      userID,
+      firstName,
+      lastName,
+      email,
+    };
+    let signedToken = jwt.sign(token, process.env.JWT_SECRET);
+    res.send(signedToken);
+  } else {
+    res.sendStatus(403);
+  }
+};
 
 module.exports = {
   register,
