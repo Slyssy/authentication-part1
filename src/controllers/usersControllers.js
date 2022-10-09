@@ -7,7 +7,8 @@ const getUsers = (req, res) => {
   // * Creating a variable that stores the value of the SQL query for this
   // *  getUsers route's call back function.
   // # Getting user ID, first name, last name and job title.
-  const sqlQuery = 'select id, first_name, last_name, position from users';
+  const sqlQuery =
+    'select id, first_name, last_name, position, password_hash from users';
   db.query(sqlQuery, (err, rows) => {
     // * If there is an error, we want to send an error code and log the error.
     if (err) {
