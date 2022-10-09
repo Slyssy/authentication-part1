@@ -1,13 +1,14 @@
 const db = require('../utils/db');
 
-// * Creating a getUser controller function that will accept a request and a
-// *  response object. It will return all the users with the fields defined by
-// *  the query.
-const getUsers = (req, res) => {
+// * Creating a getProjects controller function that will accept a request and a
+// *  response object. It will return all the projects with the fields defined
+// *   by the query.
+const getProjects = (req, res) => {
   // * Creating a variable that stores the value of the SQL query for this
-  // *  getUsers route's call back function.
+  // *  getProjects route's call back function.
   // # Getting user ID, first name, last name and job title.
-  const sqlQuery = 'select id, first_name, last_name, position from users';
+  const sqlQuery =
+    'select id, project_name, street_1, street_2, city, state, project_status, project_margin, original_revenue, adjusted_revenue, estimated_start_date,estimated_complete_date from projects';
   db.query(sqlQuery, (err, rows) => {
     // * If there is an error, we want to send an error code and log the error.
     if (err) {
@@ -26,30 +27,30 @@ const getUsers = (req, res) => {
 
 // * If the id is not valid, the response will be "null", else the entire user
 // *  will be returned in the response.
-const getUsersByID = (req, res) => {
+const getProjectByID = (req, res) => {
   // * Creating a variable to store the path parameter.
   // * We will use this in the sqlQuery below to make the query dynamic base on
   // *  the user's input.
-  const userID = req.params.id;
+  const projectID = req.params.id;
   // * If userID is falsy (null, undefined, ''), which means the user is not
   // * sending an ID, send a 400 status code and exit the function.
-  if (!userID) {
+  if (!projectID) {
     res.sendStatus(400);
     return;
   }
   // * Storing the SQL query to a variable. This query will return the user ID,
-  // *  first_name, last_name, position, email, phone, pay_rate, username, and
+  // *  first_name, last_name, job_title, email, phone, pay_rate, username, and
   // *  the user_password
   // * Using the userID variable to finalize the query.
   // # Using parameterized SQL statements.
-  const sqlQuery = `select id, first_name, last_name, position, email, phone, pay_rate, user_name, password_hash from users where id = ?`;
+  const sqlQuery = `select * from projects where id = ?`;
   // # Saving params array as a variable.
-  const params = [userID];
+  const params = [projectID];
 
   db.query(sqlQuery, params, (err, rows) => {
     // * If there is an error, we want to send an error code and log the error.
     if (err) {
-      console.log(`The "getUsersByID" query failed: ${err}`);
+      console.log(`The "getProjectsByID" query failed: ${err}`);
       res.sendStatus(500); // # Sending 500 because error was due to a problem  with the backend.
     } else {
       // * If else statement to handle possible responses.
@@ -57,7 +58,7 @@ const getUsersByID = (req, res) => {
       if (rows.length > 1) {
         console.log(
           'Something went wrong. More than 1 row was returned for id:',
-          userID
+          projectID
         );
         res.sendStatus(500); //# Sending 500 because there is something wrong with the backend.
       }
@@ -76,37 +77,59 @@ const getUsersByID = (req, res) => {
 // * This function accepts a request and a response.
 
 // * This request should include a json object that includes...
-// * first_name, last_name, position, email, phone, pay_rate, username and
+// * first_name, last_name, job_title, email, phone, pay_rate, username and
 // * user_password.
 
 // * The user id will be auto generated as per the mySQL schema.
 
 // * Once the item is created we want to send a response that shows the new
 // * object.
-const postNewUser = (req, res) => {
+const postNewProject = (req, res) => {
   // # Using parameterized SQL statements.
+  let tokenUserID = req.userInfo.userID;
+
   const sqlQuery =
-    'insert into users (first_name, last_name, position, email, phone, pay_rate, username, user_password) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
+    'insert into projects (user_id, project_name, street_1, street_2, city, state, zip, project_status, project_margin, original_revenue, adjusted_revenue, budgeted_material_expense, budgeted_labor_expense, budgeted_subcontractor_expense, budgeted_miscellaneous_expense, adjusted_material_expense, adjusted_labor_expense, adjusted_subcontractor_expense, adjusted_miscellaneous_expense, actual_material_expense, actual_labor_expense, actual_subcontractor_expense, actual_miscellaneous_expense, estimated_start_date, estimated_complete_date, actual_start_date, actual_complete_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+
   // # Saving params array as a variable. Each "?" above will be replaced in
   // # order by the items indicated in the array.
   const params = [
-    req.body.firstName,
-    req.body.lastName,
-    req.body.jobTitle,
-    req.body.email,
-    req.body.phone,
-    req.body.payRate,
-    req.body.username,
-    req.body.userPassword,
+    tokenUserID,
+    req.body.projectName,
+    req.body.street1,
+    req.body.street2,
+    req.body.city,
+    req.body.state,
+    req.body.zip,
+    req.body.projectStatus,
+    req.body.projectMargin,
+    req.body.originalRevenue,
+    req.body.adjustedRevenue,
+    req.body.budgetedMaterialExpense,
+    req.body.budgetedLaborExpense,
+    req.body.budgetedSubcontractorExpense,
+    req.body.budgetedMiscellaneousExpense,
+    req.body.adjustedMaterialExpense,
+    req.body.adjustedLaborExpense,
+    req.body.adjustedSubcontractorExpense,
+    req.body.adjustedMiscellaneousExpense,
+    req.body.actualMaterialExpense,
+    req.body.actualLaborExpense,
+    req.body.actualSubcontractorExpense,
+    req.body.actualMiscellaneousExpense,
+    req.body.ESD,
+    req.body.ECD,
+    req.body.ASD,
+    req.body.ACD,
   ];
 
   db.query(sqlQuery, params, (err, rows) => {
     if (err) {
-      console.log('The postNewUser route failed', err);
+      console.log('The postNewProject route failed', err);
       res.sendStatus(500); // # Sending 500 because error likely will originate from the backend.
     } else {
-      console.log('User Created: ', rows);
-      const resSqlQuery = `select id, first_name, last_name, position, email, phone, pay_rate, username, user_password from users where user_id = ?`;
+      console.log('Project Created: ', rows);
+      const resSqlQuery = `select * from projects where id = ?`;
       const params = [rows.insertId];
       // * Running another query to return the entire object of the newly
       // * created user.
@@ -145,33 +168,33 @@ const postNewUser = (req, res) => {
 
 // * If the id is not valid, the response will be "null", else the we will run
 // * the update query using parameterized SQL Statements.
-const updateUser = (req, res) => {
+const updateProject = (req, res) => {
   // * Creating a variable to store the path parameter.
   // * We will use this in the sqlQuery below to make the query dynamic base on
   // *  the user's input.
-  const userID = req.params.id;
-  console.log(userID);
+  const projectID = req.params.id;
+  console.log(projectID);
   // * If userID is falsy (null, undefined, ''), which means the user is not
   // * sending an ID, send a 400 status code and exit the function.
-  if (!userID) {
-    console.log(`You got a stupid error.`);
+  if (!projectID) {
+    console.log(`No project ID was indicated.`);
     res.sendStatus(400);
     return;
   }
   // * Storing the SQL query to a variable.
   // # Using parameterized SQL statements.
-  const sqlQuery = 'UPDATE users SET ? WHERE id = ?';
+  const sqlQuery = 'UPDATE projects SET ? WHERE id = ?';
   // * Running the query using the req.body as a parameterized query.
-  db.query(sqlQuery, [req.body, userID], (err, rows) => {
+  db.query(sqlQuery, [req.body, projectID], (err, rows) => {
     if (err) {
       console.log(`The updateUser route was not successful: ${err}`);
       res.sendStatus(500); // # Sending 500 because error likely will originate from the backend.
     } else {
       // * Running another query that makes use of the user ID to show the
       // *  updated response object.
-      const resSqlQuery = `select id, first_name, last_name, position, email, phone, pay_rate, user_name, password_hash from users where id = ?`;
+      const resSqlQuery = `select * from projects where id = ?`;
       // # Saving params array as a variable.
-      const resParams = [userID];
+      const resParams = [projectID];
       db.query(resSqlQuery, resParams, (err, rows) => {
         // * If there is an error, we want to send an error code and log the error.
         if (err) {
@@ -183,7 +206,7 @@ const updateUser = (req, res) => {
           if (rows.length > 1) {
             console.log(
               'Something went wrong. More than 1 row was returned for id:',
-              userID
+              projectID
             );
             res.sendStatus(500); //# Sending 500 because there is something wrong with the backend.
           }
@@ -208,21 +231,21 @@ const updateUser = (req, res) => {
 
 // * We will send the response with the number of rows deleted.
 
-const deleteUser = (req, res) => {
+const deleteProject = (req, res) => {
   // * Creating a variable to store the path parameter.
   // * We will use this in the sqlQuery below to make the query dynamic base on
   // *  the user's input.
-  const userID = req.params.id;
+  const projectID = req.params.id;
   // * If userID is falsy (null, undefined, ''), which means the user is not
   // * sending an ID, send a 400 status code and exit the function.
-  if (!userID) {
+  if (!projectID) {
     res.sendStatus(400);
     return;
   }
   // * Storing the SQL query to a variable.
   // # Using parameterized SQL statements.
-  const sqlQuery = 'DELETE FROM users WHERE id = ?';
-  const params = [userID];
+  const sqlQuery = 'DELETE FROM projects WHERE id = ?';
+  const params = [projectID];
   db.query(sqlQuery, params, (err, rows) => {
     if (err) {
       console.log('The deleteUser route failed', err);
@@ -237,9 +260,9 @@ const deleteUser = (req, res) => {
 
 //* Exporting route functions
 module.exports = {
-  getUsers,
-  getUsersByID,
-  postNewUser,
-  updateUser,
-  deleteUser,
+  getProjects,
+  getProjectByID,
+  postNewProject,
+  updateProject,
+  deleteProject,
 };

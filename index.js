@@ -13,10 +13,12 @@ app.use(express.static('./public'));
 //* Importing Routers and setting them to variables
 const userRoutes = require('./src/routes/usersRoutes');
 const authRoutes = require('./src/routes/authRoutes');
+const projectRoutes = require('./src/routes/projectRoutes');
 
 //* Using the route variables.
 app.use(userRoutes);
 app.use(authRoutes);
+app.use(projectRoutes);
 
 app.listen(port, () => {
   console.log('app is listening on:', port);

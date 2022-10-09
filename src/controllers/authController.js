@@ -83,7 +83,7 @@ const login = async (req, res) => {
     return;
   }
   if (rows.length === 0) {
-    res.sendStatus(400);
+    res.sendStatus(403);
     return;
   }
   const userID = rows[0].id;
