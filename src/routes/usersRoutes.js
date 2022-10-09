@@ -1,13 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const bodyParser = require('body-parser');
 
 //* Importing Controllers
 //* Destructuring imported object to give each function it's own variable name.
 const {
   getUsers,
   getUsersByID,
-  postNewUser,
+  // postNewUser,
   updateUser,
   deleteUser,
 } = require('../controllers/usersControllers.js');
@@ -20,7 +19,7 @@ router.get('/users', getUsers);
 
 router.get('/users/:id', getUsersByID);
 
-router.post('/users', postNewUser);
+// router.post('/users', postNewUser);
 
 router.put('/users/:id', updateUser);
 
