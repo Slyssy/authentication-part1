@@ -27,7 +27,7 @@ h2 {
   color: rgb(21, 20, 19);
 }
 
-.user-routes {
+section {
   width: 90%;
   margin: 2em auto;
   display: flex;
@@ -36,7 +36,7 @@ h2 {
   flex-wrap: wrap;
 }
 .card {
-  width: 28%;
+  width: 40%;
 }
 
 h3 {
