@@ -4,12 +4,20 @@ const db = require('../utils/db');
 // *  response object. It will return all the projects with the fields defined
 // *   by the query.
 const getProjects = (req, res) => {
+  //* Setting token for user_id to a variable.
+  let tokenUserID = req.userInfo.userID;
+
   // * Creating a variable that stores the value of the SQL query for this
   // *  getProjects route's call back function.
   // # Getting user ID, first name, last name and job title.
   const sqlQuery =
-    'select id, project_name, street_1, street_2, city, state, project_status, project_margin, original_revenue, adjusted_revenue, estimated_start_date,estimated_complete_date from projects';
-  db.query(sqlQuery, (err, rows) => {
+    'select id, project_name, street_1, street_2, city, state, project_status, project_margin, original_revenue, adjusted_revenue, estimated_start_date,estimated_complete_date, user_id from projects where user_id = ?';
+
+  //* Setting param for user_id so only projects with the correct user_id will
+  //*  be displayed.
+  let params = [tokenUserID];
+
+  db.query(sqlQuery, params, (err, rows) => {
     // * If there is an error, we want to send an error code and log the error.
     if (err) {
       console.log(`The "getUsers" query failed: ${err}`);
