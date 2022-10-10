@@ -72,3 +72,24 @@ estimated_complete_date date,
 actual_start_date date,
 actual_complete_date date,
 FOREIGN KEY (user_id) references users(id)
+
+-- # Creating Expense Table ----------------------------------------------------
+CREATE TABLE expenses (
+id int primary key auto_increment,
+project_id int NOT NULL,
+expense_date date NOT NULL,
+expense_type varchar(20) NOT NULL,
+vendor_name varchar(20)  NOT NULL,
+expense_amount decimal(11, 2),
+FOREIGN KEY (project_id) references projects(id)
+)
+
+-- #Creating Comments Table ----------------------------------------------------
+CREATE TABLE comments (
+id int primary key auto_increment,
+project_id int NOT NULL,
+comment_subject varchar(50) NOT NULL,
+comment_description varchar(500) NOT NULL,
+comment_date date NOT NULL,
+FOREIGN KEY (project_id) references projects(id)
+)
