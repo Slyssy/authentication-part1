@@ -14,7 +14,7 @@ body {
   max-width: 1600px;
   margin: 4rem auto;
   padding: 2rem;
-  background-color: rgb(159, 154, 149);
+  background-color: rgb(226, 219, 211);
   border-radius: 16px;
 }
 
@@ -55,4 +55,13 @@ ul {
 .note {
   font-style: italic;
   color: rgb(159, 5, 38);
+}
+
+figure {
+  width: 90%;
+  margin: 0 auto;
+}
+
+img {
+  width: 100%;
 }
